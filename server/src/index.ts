@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { createFeedback } from './controller/feedback.controller'; 
+import { createFeedback} from "./controller/feedback.controller"
 import { googleSignIn } from './controller/auth.controller';
 import './config/db'
 
