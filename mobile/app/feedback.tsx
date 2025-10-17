@@ -10,9 +10,9 @@ export default function FeedbackScreen() {
       Alert.alert('Hold On!', 'Please select a star rating before submitting.');
       return;
     }
-
+    const apiUrl = 'http://192.168.0.106:3000'
     try {
-      const response = await fetch('http://YOUR_COMPUTER_IP:8082/feedback', {
+      const response = await fetch(`${apiUrl}/api/v1/feedback`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,21 +1,22 @@
 import { Request, Response } from 'express';
-import pool from '../config/db';
+import { Feedback } from '../schema/feedback';
 
 export const createFeedback = async (req: Request, res: Response) => {
   try {
-    const { rating, category, comment, email } = req.body;
+    const { rating, comment } = req.body;
 
-    // Basic validation
-    if (!rating || !category) {
-      return res.status(400).json({ message: 'Rating and category are required.' });
+    // validation
+    if (!rating) {
+      return res.status(400).json({ message: 'Rating is required.' });
     }
 
-    const newFeedback = await pool.query(
-      'INSERT INTO feedback (rating, category, comment, email) VALUES ($1, $2, $3, $4) RETURNING *',
-      [rating, category, comment, email]
-    );
+    const newFeedback = new Feedback({ rating, comment });
+    await newFeedback.save();
 
-    res.status(201).json(newFeedback.rows[0]);
+    res.status(201).json({
+      message: 'Feedback created successfully.',
+      data: newFeedback,
+    });  
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error while creating feedback.' });

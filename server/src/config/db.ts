@@ -1,24 +1,15 @@
-import { Pool } from 'pg';
-import dotenv from 'dotenv';
+// @ts-nocheck
+import mongoose from 'mongoose';
+import 'dotenv/config'
 
-dotenv.config();
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
-
-// Test the connection
-pool.connect((err, client, release) => {
-  // Always release the client, even if there's an error
-  if (client) {
-    release();
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI)
+    console.log('Connected to MongoDB')
+  } catch (error) {
+    console.error(error, 'Error connecting to MongoDB')
+    process.exit(1)
   }
-  
-  if (err) {
-    return console.error('Error acquiring client', err.stack);
-  }
-  
-  console.log('✅ Database connected successfully!');
-});
+}
 
-export default pool;
+export default connectDB;
